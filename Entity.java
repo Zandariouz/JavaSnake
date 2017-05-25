@@ -1,10 +1,16 @@
 package game;
 
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+
 public class Entity {
 	
 	private int x, y, size;
-	
 	public Entity(int size) {
+		this.size = size;
+	}
+	
+	public void setSize(int size) {
 		this.size = size;
 	}
 	
@@ -42,7 +48,7 @@ public class Entity {
 		if(o == this) return false;
 		return getBound().intersects(o.getBound());
 	}
-	
+
 	public void render(Graphics2D g2d) {
 		g2d.fillRect(x + 1, y + 1, size - 2, size - 2);
 	}
