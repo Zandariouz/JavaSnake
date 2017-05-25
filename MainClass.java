@@ -1,6 +1,14 @@
 package game;
 
-public class MainClass {
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
+
+import javax.swing.JPanel;
+
+
+
+public class MainClass extends JPanel {
 
 	public static void main(String[] ars) {
 	
@@ -16,3 +24,4 @@ public class MainClass {
 	}
   
 }
+
