@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener {
 
-	public static final int WIDTH = 400;
-	public static final int HEIGHT = 400;
+	public static final int WIDTH = 800;
+	public static final int HEIGHT = 800;
 	
 	//render
 	private Graphics2D g2d;
@@ -26,7 +26,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	private long targetTime;
 	
 	//game
-	private final int SIZE = 10;
+	private final int SIZE = 20;
 	private Entity head, apple;
 	private ArrayList<Entity> snake;
 	private int score;
@@ -136,7 +136,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	}
 	
 	public void setApple() {
-		if((int)(Math.random() * 3) == 0) {
+		if((int)(Math.random() * 12) == 0) {
 			int x = (int)(Math.random() * (WIDTH - SIZE));
 			int y = (int)(Math.random() * (HEIGHT - SIZE));
 			x = x - (x % SIZE);
