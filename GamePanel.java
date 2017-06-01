@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener {
 
-	public static final int WIDTH = 800;
-	public static final int HEIGHT = 800;
+	public static final int WIDTH = 1000;
+	public static final int HEIGHT = 1000;
 	
 	//render
 	private Graphics2D g2d;
@@ -26,7 +26,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	private long targetTime;
 	
 	//game
-	private final int SIZE = 20;
+	private final int SIZE = 10;
 	private Entity head, apple;
 	private ArrayList<Entity> snake;
 	private int score;
@@ -35,6 +35,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	private int previousMove;
 	private int nextMove;
 	private int addition = 1;
+	private boolean newgame;
 	
 	//movement
 	private int dx, dy;
@@ -124,19 +125,20 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			snake.add(e);
 		}
 		
+		previousMove = -1;
+		newgame = true;
 		addition = 1;
 		apple = new Entity(SIZE);
 		setApple();
 		score = 0;
 		gameover = false;
 		level = 1;
-		previousMove = -1;
 		dx = dy = 0;
 		setFPS(level * 10);
 	}
 	
 	public void setApple() {
-		if((int)(Math.random() * 12) == 0) {
+		if((int)(Math.random() * 20) == 0) {
 			int x = (int)(Math.random() * (WIDTH - SIZE));
 			int y = (int)(Math.random() * (HEIGHT - SIZE));
 			x = x - (x % SIZE);
@@ -178,28 +180,32 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			}
 			return;
 		}
-		if(up == true && dy == 0 && previousMove != 2) {
+		if(up == true && dy == 0 && previousMove != 2 || up == true && newgame == true) {
 			dy = -SIZE;
 			dx = 0;
 			nextMove = 1;
+			newgame = false;
 		}
 		
-		if(down == true && dy == 0 && previousMove != 1) {
+		if(down == true && dy == 0 && previousMove != 1 || down == true && newgame == true) {
 			dy = SIZE;
 			dx = 0;
 			nextMove = 2;
+			newgame = false;
 		}
 		
-		if(left == true && dx == 0 && previousMove != 4) {
+		if(left == true && dx == 0 && previousMove != 4 || left == true && newgame == true) {
 			dy = 0;
 			dx = -SIZE;
 			nextMove = 3;
+			newgame = false;
 		}
 		
-		if(right == true && dx == 0 && previousMove != 3) {
+		if(right == true && dx == 0 && previousMove != 3 || right == true && newgame == true) {
 			dy = 0;
 			dx = SIZE;
 			nextMove = 4;
+			newgame = false;
 		}
 		
 		if(dx != 0 || dy != 0) {
@@ -211,7 +217,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			head.move(dx, dy);
 		}
 		
-		if(head.getX() < 0 || head.getY() < 0 || head.getX() > WIDTH || head.getY() > HEIGHT) {
+		if(head.getX() < 0 || head.getY() < 0 || head.getX() > WIDTH - SIZE|| head.getY() > HEIGHT - SIZE) {
 			gameover = true;
 		}
 		
@@ -234,11 +240,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			}
 			setApple();
 				
-			if(score %10 == 0) {
-				level++;
-				if(level > 10) level = 10;
-					setFPS(level * 5 + 5);
-			}
+			level = score / 10 + 1;
+			if(level > 10) level = 10;
+				setFPS(level * 3 + 7);
 		}
 		
 		if(head.getX() < 0)
@@ -254,35 +258,35 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			head.setY(0);
 	}
 	
-	public void render(Graphics2D g2d) {
+	public void render(Graphics2D graphical) {
 		previousMove = nextMove;
-		g2d.clearRect(0, 0, WIDTH, HEIGHT);
-		g2d.setColor(Color.RED);
+		graphical.clearRect(0, 0, WIDTH, HEIGHT);
+		graphical.setColor(Color.RED);
 		int interval = 0;
 		for(Entity e : snake) {
-			if(interval == 5) {
-				g2d.setColor(Color.BLUE);
+			if(interval == 10) {
+				graphical.setColor(Color.CYAN);
 				interval = 0;
 			}
-			e.render(g2d);
-			g2d.setColor(Color.WHITE);
+			e.render(graphical);
+			graphical.setColor(Color.WHITE);
 			interval++;
 		}
-		g2d.setColor(Color.YELLOW);
+		graphical.setColor(Color.YELLOW);
 		if(addition == 3)
-			g2d.setColor(Color.GREEN);
-		apple.render(g2d);
+			graphical.setColor(Color.GREEN);
+		apple.render(graphical);
 		
 		if(gameover) {
-			g2d.setColor(Color.WHITE);
-			g2d.drawString("GameOver", 150, 200);
+			graphical.setColor(Color.WHITE);
+			graphical.drawString("GameOver", 150, 200);
 		}
-		g2d.setColor(Color.WHITE);
-		g2d.drawString("Score : " + score + " Level : " + level, 10, 10);
+		graphical.setColor(Color.WHITE);
+		graphical.drawString("Score : " + score + " Level : " + level, 10, 10);
 		
 		if(dx == 0 && dy == 0) {
-			g2d.setColor(Color.WHITE);
-			g2d.drawString("Ready", 150, 200);
+			graphical.setColor(Color.WHITE);
+			graphical.drawString("Ready", 150, 200);
 		}
 	}
 	
