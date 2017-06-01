@@ -49,7 +49,7 @@ public class Entity {
 		return getBound().intersects(o.getBound());
 	}
 
-	public void render(Graphics2D g2d) {
-		g2d.fillRect(x + 2, y + 2, size - 4, size - 4);
+	public void render(Graphics2D graphical) {
+		graphical.fillRect(x + 2, y + 2, size - 4, size - 4);
 	}
 }
